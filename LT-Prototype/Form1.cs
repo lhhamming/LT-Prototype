@@ -1,4 +1,5 @@
 using System.Collections;
+using System.ComponentModel;
 using System.Data;
 
 namespace LT_Prototype
@@ -12,6 +13,7 @@ namespace LT_Prototype
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             #region Load in data from csv
             try
             {
@@ -47,6 +49,40 @@ namespace LT_Prototype
                 throw;
             }
             #endregion
+        }
+
+        private void klantenSelector_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                //Get info from combo box and lock it & load data for containers & trucks
+                klantenSelector.Enabled = false;
+                containersGebruikt.Enabled = true;
+                vrachtwagenSelector.Enabled = true;
+
+                string containerPath = @"../../../excel/containers-csv.csv";
+                fillComboBox(containerPath, containersGebruikt.Items);
+                string vrachtwagensPath = @"../../../excel/vrachtwagens-csv.csv";
+                fillComboBox(vrachtwagensPath, vrachtwagenSelector.Items);
+            }
+        }
+
+        private void fillComboBox(string filePath, ComboBox.ObjectCollection items)
+        {
+            string[] lines = File.ReadAllLines(filePath);
+            string[] fields = lines[0].Split(',');
+            int cols = fields.GetLength(0);
+
+            DataTable dt = new DataTable();
+            for (int i = 0; i < cols; i++)
+            {
+                dt.Columns.Add(fields[i]);
+            }
+
+            for (int i = 1; i < lines.GetLength(0); i++)
+            {
+                items.Add(lines[i].Split(',')[0]);
+            }
         }
     }
 }
