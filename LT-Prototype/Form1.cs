@@ -6,6 +6,7 @@ namespace LT_Prototype
 {
     public partial class Form1 : Form
     {
+        DataTable dt = new DataTable();
         public Form1()
         {
             InitializeComponent();
@@ -51,20 +52,36 @@ namespace LT_Prototype
             #endregion
         }
 
+        private void klantenSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            klantenSelectorActivated();
+        }
+
         private void klantenSelector_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                //Get info from combo box and lock it & load data for containers & trucks
-                klantenSelector.Enabled = false;
-                containersGebruikt.Enabled = true;
-                vrachtwagenSelector.Enabled = true;
-
-                string containerPath = @"../../../excel/containers-csv.csv";
-                fillComboBox(containerPath, containersGebruikt.Items);
-                string vrachtwagensPath = @"../../../excel/vrachtwagens-csv.csv";
-                fillComboBox(vrachtwagensPath, vrachtwagenSelector.Items);
+                klantenSelectorActivated();
             }
+        }
+
+        private void klantenSelectorActivated()
+        {
+            //Get info from combo box and lock it & load data for containers & trucks
+            klantenSelector.Enabled = false;
+            containersGebruikt.Enabled = true;
+            vrachtwagenSelector.Enabled = true;
+
+            string containerPath = @"../../../excel/containers-csv.csv";
+            fillComboBox(containerPath, containersGebruikt.Items);
+            string vrachtwagensPath = @"../../../excel/vrachtwagens-csv.csv";
+            fillComboBox(vrachtwagensPath, vrachtwagenSelector.Items);
+
+
+            
+            dt.Columns.Add(new DataColumn("Kvknummer"));
+            dt.Columns.Add(new DataColumn("item"));
+            usedItemsGrid.DataSource = dt;
         }
 
         private void fillComboBox(string filePath, ComboBox.ObjectCollection items)
@@ -84,5 +101,43 @@ namespace LT_Prototype
                 items.Add(lines[i].Split(',')[0]);
             }
         }
+
+        #region selectedIndex for view
+
+        private void containersGebruikt_KeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { updateGridView(containersGebruikt.SelectedItem.ToString()); }
+        }
+
+        private void containersGebruikt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateGridView(containersGebruikt.SelectedItem.ToString());
+        }
+
+        private void vrachtwagenSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateGridView(vrachtwagenSelector.SelectedItem.ToString());
+        }
+
+        private void vrachtwagenSelector_KeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { updateGridView(vrachtwagenSelector.SelectedItem.ToString()); }
+        }
+
+        #endregion
+
+        private void updateGridView(string selectedItem)
+        {
+            if(selectedItem != null) { 
+            
+                GridViewItem item = new GridViewItem(klantenSelector.SelectedItem.ToString(), selectedItem);
+                DataRow dr = dt.NewRow();
+                dr["Kvknummer"] = item.KVKNummer;
+                dr["item"] = item.itemType;
+                dt.Rows.Add(dr);
+            }
+        }
+
+
     }
 }
