@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LT_Prototype
-{  
+{
     /*
      * This class will act like an database of som sort. So that the application only has to load in the
      * Items once.
      * 
+     * SINGLETON (There can only be on instance) More info: https://en.wikipedia.org/wiki/Singleton_pattern
      */
     public class Storage
     {
