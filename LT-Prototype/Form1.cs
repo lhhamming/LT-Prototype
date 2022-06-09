@@ -4,6 +4,16 @@ using System.Data;
 
 namespace LT_Prototype
 {
+    //TODO: Excel formulier keuze dynamisch
+    //TODO: Laad de rijen in van het Excel formulier
+    //TODO: Maak een knop voor data exporteren
+    //TODO: Maak een configuratie mapje die:
+              // - Nummers matched aan namen
+              // - Beschrijving van iets koppelen aan nummers
+    //TODO: Nummers exporteren ipv namen
+    //TODO: Door kunnen koppelen aan Exact Online
+    //TODO: Onderzoek de mogelijkheden van de API.
+    //TODO: Maak een inlog methode voor Exact Online om een Key te krijgen om data mee uit te wisselen.
     public partial class Form1 : Form
     {
         DataTable dt = new DataTable();
@@ -13,8 +23,7 @@ namespace LT_Prototype
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
+        { 
             #region Load in data from csv
             try
             {
@@ -129,7 +138,6 @@ namespace LT_Prototype
         private void updateGridView(string selectedItem)
         {
             if(selectedItem != null) { 
-            
                 GridViewItem item = new GridViewItem(klantenSelector.SelectedItem.ToString(), selectedItem);
                 DataRow dr = dt.NewRow();
                 dr["Kvknummer"] = item.KVKNummer;

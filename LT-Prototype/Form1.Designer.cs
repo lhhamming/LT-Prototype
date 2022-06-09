@@ -101,7 +101,6 @@
             this.vrachtwagenSelector.Size = new System.Drawing.Size(580, 45);
             this.vrachtwagenSelector.TabIndex = 4;
             this.vrachtwagenSelector.SelectedIndexChanged += new System.EventHandler(this.vrachtwagenSelector_SelectedIndexChanged);
-            this.vrachtwagenSelector.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vrachtwagenSelector_KeyPress);
             // 
             // usedItemsGrid
             // 
